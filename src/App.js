@@ -1,24 +1,37 @@
-import logo from './logo.svg';
-import './App.css';
-
+import axios from "axios";
+import Characters from "./components/Characters";
+import { useEffect } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { loadData } from "./redux/slices/characatersSlice";
+import { Route, Routes } from "react-router-dom";
+import Character from "./components/Characater";
 function App() {
+    
+  let dispatch = useDispatch()
+
+
+  useEffect(()=>{
+    axios.get("https://hp-api.onrender.com/api/characters")
+    .then(response => {
+          dispatch(loadData(response.data))
+    } )
+    .catch()
+  })
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+
+
+    <Routes>
+
+      
+      <Route path="/" element={<Characters />}/>
+      <Route path="/:id" element={<Character />}/>
+
+    </Routes>
+
+
+
   );
 }
 
